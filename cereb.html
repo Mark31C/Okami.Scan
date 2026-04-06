@@ -1,0 +1,16 @@
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-firestore.js";
+
+  // Aquí va tu configuración de Firebase (apiKey, authDomain, etc.)
+  const firebaseConfig = {
+    apiKey: "TU_API_KEY",
+    // ... resto de tu config
+  };
+
+  const app = initializeApp(firebaseConfig);
+  
+  // Aquí pegas las funciones de mostrarFormulario y subirCapituloCompleto
+  // IMPORTANTE: Para que funcionen con "onclick", deben declararse como window.nombreFuncion
+  window.mostrarFormulario = (tipo) => { ... };
+</script>
