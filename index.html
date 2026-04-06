@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Okami Scan</title>
+    <style>
+        body { font-family: Arial; background: #111; color: white; margin: 0; }
+        header { text-align: center; padding: 20px; }
+        #search { width: 80%; padding: 10px; margin: 20px auto; display: block; }
+        .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; padding: 20px; }
+        .manga { background: #1a1a1a; border-radius: 10px; overflow: hidden; text-align: center; }
+        .manga img { width: 100%; }
+        .manga p { padding: 10px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🐺 Okami Scan</h1>
+        <input type="text" id="search" placeholder="Buscar manga...">
+    </header>
+    <div class="container">
+        <div class="manga">
+            <img src="https://via.placeholder.com/150" alt="Manga 1">
+            <p>Manga 1</p>
+        </div>
+        <div class="manga">
+            <img src="https://via.placeholder.com/150" alt="Manga 2">
+            <p>Manga 2</p>
+        </div>
+        <div class="manga">
+            <img src="https://via.placeholder.com/150" alt="Manga 3">
+            <p>Manga 3</p>
+        </div>
+        <!-- Agrega más mangas aquí -->
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
