@@ -1,0 +1,17 @@
+<div id="formulario-subida" style="display:none; padding: 20px; border: 1px solid #ccc;">
+    <h3 id="form-title">Subir Capítulo</h3>
+    
+    <input type="number" id="cap-numero" placeholder="Número del Capítulo (ej: 01)">
+    
+    <select id="manga-destino">
+        <option value="">Selecciona el Manga</option>
+        </select>
+
+    <label>Selecciona todas las páginas:</label>
+    <input type="file" id="cap-paginas" multiple accept="image/*">
+    
+    <progress id="upload-progress" value="0" max="100" style="width: 100%; display:none;"></progress>
+    <p id="status-text"></p>
+
+    <button onclick="subirCapituloCompleto()">Subir Todo el Capítulo</button>
+</div>
