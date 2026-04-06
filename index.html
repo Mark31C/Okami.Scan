@@ -3,125 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Okami Scan | Biblioteca Manga</title>
+    <title>Okami Scan | Oficial</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --naranja: #ff4500; --fondo: #0a0a0a; --tarjeta: #161616; --texto: #eee; }
-        body { background: var(--fondo); color: var(--texto); font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
+        :root { --naranja: #ff4500; --negro: #0a0a0a; --tarjeta: rgba(20, 20, 20, 0.9); }
         
-        header { background: #111; padding: 40px 20px; text-align: center; border-bottom: 3px solid var(--naranja); }
-        h1 { margin: 0; font-size: 2.5rem; color: var(--naranja); text-transform: uppercase; letter-spacing: 3px; }
-
-        /* Buscador */
-        .search-container { margin: -25px auto 30px; max-width: 600px; padding: 0 20px; }
-        #buscador-manga { 
-            width: 100%; padding: 15px 25px; border-radius: 50px; border: 2px solid var(--naranja); 
-            background: #1a1a1a; color: white; font-size: 16px; outline: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        body { 
+            margin: 0; padding: 0; font-family: 'Poppins', sans-serif; color: #eee;
+            background: url('https://images.alphacoders.com/132/1323380.png') no-repeat center center fixed; 
+            background-size: cover;
         }
 
-        /* Panel Admin */
-        .admin-box { background: var(--tarjeta); border: 1px dashed var(--naranja); margin: 20px auto; max-width: 800px; padding: 20px; border-radius: 10px; }
-        .btn { background: var(--naranja); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin: 5px; transition: 0.3s; }
-        .btn:hover { background: #ff6a00; transform: scale(1.05); }
-        input[type="text"], input[type="file"] { width: 80%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #222; color: white; }
+        .overlay { background: rgba(0, 0, 0, 0.7); min-height: 100vh; width: 100%; }
 
-        /* Galería de Mangas */
-        .manga-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; padding: 40px; }
-        .manga-card { background: var(--tarjeta); border-radius: 10px; overflow: hidden; border: 1px solid #222; transition: 0.3s; cursor: pointer; }
-        .manga-card:hover { transform: translateY(-10px); border-color: var(--naranja); box-shadow: 0 10px 20px rgba(255, 69, 0, 0.2); }
-        .manga-card img { width: 100%; height: 260px; object-fit: cover; }
-        .manga-info { padding: 15px; text-align: center; }
-        .manga-info h4 { margin: 0; font-size: 14px; color: var(--naranja); }
+        /* CABECERA */
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 30px; background: rgba(0,0,0,0.8); border-bottom: 2px solid var(--naranja);
+        }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .logo-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--naranja); object-fit: cover; }
+        h1 { font-size: 1.5rem; color: var(--naranja); margin: 0; text-transform: uppercase; }
+
+        /* BOTÓN TRES RAYAS */
+        .menu-icon { cursor: pointer; display: flex; flex-direction: column; gap: 5px; z-index: 1001; }
+        .menu-icon div { width: 30px; height: 4px; background: var(--naranja); border-radius: 2px; transition: 0.3s; }
+
+        /* MENÚ LATERAL (SIDEBAR) */
+        #sidebar {
+            position: fixed; right: -300px; top: 0; width: 280px; height: 100%;
+            background: #111; box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+            transition: 0.4s; z-index: 1000; padding: 80px 20px 20px;
+        }
+        #sidebar.active { right: 0; }
+
+        /* ELEMENTOS DEL MENÚ */
+        .menu-item { margin-bottom: 25px; }
+        label { display: block; color: var(--naranja); font-weight: bold; margin-bottom: 10px; }
+        #buscador-manga { 
+            width: 90%; padding: 10px; border-radius: 5px; border: 1px solid #444; 
+            background: #222; color: white; outline: none;
+        }
+
+        /* SECCIÓN OCULTA (SOLO MARIO) */
+        .admin-section { 
+            margin-top: 40px; padding-top: 20px; border-top: 1px dashed #444; 
+            opacity: 0.1; transition: 0.5s; /* Casi invisible hasta que pasas el mouse */
+        }
+        .admin-section:hover { opacity: 1; }
+        .admin-section input { width: 90%; padding: 8px; margin-bottom: 10px; border-radius: 4px; border: none; }
+        .btn-subir { width: 100%; background: var(--naranja); color: white; border: none; padding: 10px; cursor: pointer; font-weight: bold; }
+
+        /* CUADRÍCULA DE MANGAS */
+        .manga-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; padding: 30px; }
+        .manga-card { 
+            background: var(--tarjeta); border-radius: 8px; overflow: hidden; 
+            transition: 0.3s; border: 1px solid #333;
+        }
+        .manga-card:hover { transform: scale(1.05); border-color: var(--naranja); }
+        .manga-card img { width: 100%; height: 230px; object-fit: cover; }
+        .manga-info { padding: 10px; text-align: center; }
+        .manga-info h4 { margin: 0; font-size: 13px; color: #fff; }
     </style>
 </head>
 <body>
 
-<header>
-    <header style="background: #111; padding: 30px 20px; text-align: center; border-bottom: 3px solid #ff4500;">
-    <img src="https://scontent-bog2-1.xx.fbcdn.net/v/t39.30808-1/588731945_122142902756941938_8823570660178794569_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=105&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=lpiAOLrIW7MQ7kNvwEZzu2t&_nc_oc=Adp8p07AgUPgM45uGZn9YmoT4YPNOnz--nuAZHGwooCIYcgKNDZJQPlsQf2OPp00deI&_nc_zt=24&_nc_ht=scontent-bog2-1.xx&_nc_gid=OURGsgSf3HGHYeTkYpHE2w&_nc_ss=7a3a8&oh=00_Af2O2LISM1ij7XS8B4TcydEK_YrQjIDS9q8qoavjTvDhkw&oe=69D9BF61" 
-         alt="Okami Scan Logo" 
-         style="width: 120px; height: 120px; border-radius: 50%; border: 2px solid #ff4500; margin-bottom: 10px; object-fit: cover;">
-    
-    <h1 style="margin: 0; font-size: 2rem; color: #ff4500; text-transform: uppercase; letter-spacing: 2px;">Okami Scan</h1>
-</header>
-</header>
+<div class="overlay">
+    <header>
+        <div class="logo-area">
+            <img class="logo-img" src="https://scontent-bog2-1.xx.fbcdn.net/v/t39.30808-1/588731945_122142902756941938_8823570660178794569_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=105&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=lpiAOLrIW7MQ7kNvwEZzu2t&_nc_oc=Adp8p07AgUPgM45uGZn9YmoT4YPNOnz--nuAZHGwooCIYcgKNDZJQPlsQf2OPp00deI&_nc_zt=24&_nc_ht=scontent-bog2-1.xx&_nc_gid=OURGsgSf3HGHYeTkYpHE2w&_nc_ss=7a3a8&oh=00_Af2O2LISM1ij7XS8B4TcydEK_YrQjIDS9q8qoavjTvDhkw&oe=69D9BF61" alt="Logo">
+            <h1>Okami Scan</h1>
+        </div>
+        <div class="menu-icon" onclick="toggleMenu()">
+            <div></div><div></div><div></div>
+        </div>
+    </header>
 
-<div class="search-container">
-    <input type="text" id="buscador-manga" placeholder="🔍 Buscar manga favorito...">
-</div>
+    <div id="sidebar">
+        <div class="menu-item">
+            <label>🔍 BUSCAR PROYECTO</label>
+            <input type="text" id="buscador-manga" placeholder="Escribe el nombre...">
+        </div>
 
-<div class="admin-box">
-    <h3>⚙️ Panel de Control (Solo Mario)</h3>
-    <button class="btn" onclick="document.getElementById('form-subida').style.display='block'">➕ Nuevo Manga</button>
-    <div id="form-subida" style="display:none;">
-        <input type="text" id="titulo-manga" placeholder="Nombre del Manga">
-        <input type="text" id="url-portada" placeholder="URL de la imagen (portada)">
-        <button class="btn" style="background:#28a745" onclick="subirAMariodb()">🚀 Publicar en Web</button>
+        <div class="admin-section">
+            <label>🛠️ PANEL MAESTRO</label>
+            <input type="text" id="titulo-manga" placeholder="Nombre del Manga">
+            <input type="text" id="url-portada" placeholder="URL de la Imagen">
+            <button class="btn-subir" onclick="subirManga()">PUBLICAR</button>
+        </div>
     </div>
-</div>
 
-<div id="biblioteca-mangas" class="manga-grid">
-    </div>
+    <div id="biblioteca-mangas" class="manga-grid"></div>
+</div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // --- ¡IMPORTANTE! --- 
-    // Mario, pega aquí tus credenciales de Firebase entre las llaves { }
+    // --- CONFIGURA TUS DATOS AQUÍ ---
     const firebaseConfig = {
         apiKey: "TU_API_KEY",
-        authDomain: "tu-proyecto.firebaseapp.com",
-        projectId: "tu-proyecto-id",
-        storageBucket: "tu-proyecto.appspot.com",
-        appId: "tu-app-id"
+        authDomain: "TU_DOMINIO",
+        projectId: "TU_PROJECT_ID",
+        appId: "TU_APP_ID"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // FUNCIÓN PARA SUBIR
-    window.subirAMariodb = async () => {
-        const titulo = document.getElementById('titulo-manga').value;
-        const portada = document.getElementById('url-portada').value;
-        if(!titulo) return alert("Ponle un nombre al manga");
-
-        try {
-            await addDoc(collection(db, "mangas"), {
-                titulo: titulo,
-                portada: portada || 'https://via.placeholder.com/180x260?text=Okami+Scan',
-                fecha: serverTimestamp()
-            });
-            alert("¡Manga añadido a la lista!");
-            document.getElementById('titulo-manga').value = "";
-            document.getElementById('url-portada').value = "";
-        } catch (e) { alert("Error: " + e.message); }
+    // ABRIR/CERRAR MENÚ
+    window.toggleMenu = () => {
+        document.getElementById('sidebar').classList.toggle('active');
     };
 
-    // MOSTRAR MANGAS EN TIEMPO REAL
+    // SUBIR MANGA
+    window.subirManga = async () => {
+        const t = document.getElementById('titulo-manga').value;
+        const p = document.getElementById('url-portada').value;
+        if(!t) return alert("Falta el título");
+        await addDoc(collection(db, "mangas"), { titulo: t, portada: p, fecha: serverTimestamp() });
+        alert("¡Listo Mario! Subido.");
+    };
+
+    // CARGAR MANGAS
     const q = query(collection(db, "mangas"), orderBy("fecha", "desc"));
     onSnapshot(q, (snapshot) => {
-        const biblioteca = document.getElementById('biblioteca-mangas');
-        biblioteca.innerHTML = "";
-        snapshot.forEach((doc) => {
+        const grid = document.getElementById('biblioteca-mangas');
+        grid.innerHTML = "";
+        snapshot.forEach(doc => {
             const m = doc.data();
-            biblioteca.innerHTML += `
+            grid.innerHTML += `
                 <div class="manga-card">
-                    <img src="${m.portada}" alt="Portada">
-                    <div class="manga-info">
-                        <h4>${m.titulo}</h4>
-                    </div>
-                </div>
-            `;
+                    <img src="${m.portada || 'https://via.placeholder.com/160x230'}">
+                    <div class="manga-info"><h4>${m.titulo}</h4></div>
+                </div>`;
         });
     });
 
-    // BUSCADOR EN VIVO
+    // BUSCADOR
     document.getElementById('buscador-manga').addEventListener('input', (e) => {
-        const texto = e.target.value.toLowerCase();
+        const val = e.target.value.toLowerCase();
         document.querySelectorAll('.manga-card').forEach(card => {
-            const titulo = card.querySelector('h4').innerText.toLowerCase();
-            card.style.display = titulo.includes(texto) ? "block" : "none";
+            card.style.display = card.innerText.toLowerCase().includes(val) ? "block" : "none";
         });
     });
 </script>
