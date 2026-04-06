@@ -70,3 +70,42 @@
     </script>
 </body>
 </html>
+<div id="biblioteca-mangas" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto;">
+    </div>
+
+<script type="module">
+    import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    
+    // Usamos la misma APP que ya inicializaste arriba
+    const db = getFirestore();
+    const biblioteca = document.getElementById('biblioteca-mangas');
+
+    // Creamos una consulta ordenada por fecha (el más nuevo primero)
+    const consulta = query(collection(db, "mangas"), orderBy("fecha", "desc"));
+
+    // Escuchamos los cambios en tiempo real
+    onSnapshot(consulta, (snapshot) => {
+        biblioteca.innerHTML = ""; // Limpiamos para no duplicar
+
+        snapshot.forEach((doc) => {
+            const manga = doc.data();
+            
+            // Creamos la tarjeta del manga
+            const card = document.createElement('div');
+            card.style.cssText = "background: #1a1a1a; border-radius: 8px; overflow: hidden; border: 1px solid #333; transition: 0.3s;";
+            
+            // Si no hay imagen, usamos una de relleno (placeholder)
+            const portadaUrl = manga.portada || 'https://via.placeholder.com/150x220?text=Okami+Scan';
+
+            card.innerHTML = `
+                <img src="${portadaUrl}" style="width: 100%; height: 220px; object-fit: cover;">
+                <div style="padding: 10px;">
+                    <h4 style="margin: 0; font-size: 14px; color: #ff4500;">${manga.titulo}</h4>
+                    <p style="font-size: 12px; color: #888; margin: 5px 0 0;">Capítulo: ${manga.ultimoCap || '1'}</p>
+                </div>
+            `;
+            
+            biblioteca.appendChild(card);
+        });
+    });
+</script>
