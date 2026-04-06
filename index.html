@@ -3,38 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Okami Scan</title>
+    <title>Okami Scan | Panel de Control</title>
     <style>
-        body { font-family: Arial; background: #111; color: white; margin: 0; }
-        header { text-align: center; padding: 20px; }
-        #search { width: 80%; padding: 10px; margin: 20px auto; display: block; }
-        .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; padding: 20px; }
-        .manga { background: #1a1a1a; border-radius: 10px; overflow: hidden; text-align: center; }
-        .manga img { width: 100%; }
-        .manga p { padding: 10px; }
+        body { background: #0f0f0f; color: #eee; font-family: 'Arial', sans-serif; margin: 0; padding: 20px; text-align: center; }
+        .panel { background: #1a1a1a; border: 2px solid #ff4500; border-radius: 12px; padding: 25px; max-width: 450px; margin: 20px auto; box-shadow: 0 4px 15px rgba(255,69,0,0.3); }
+        h1 { color: #ff4500; text-transform: uppercase; letter-spacing: 2px; }
+        button { background: #ff4500; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold; margin: 10px; transition: 0.3s; }
+        button:hover { background: #ff6a00; transform: translateY(-2px); }
+        input { width: 85%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #222; color: white; }
+        #form-subida { display: none; margin-top: 20px; border-top: 1px solid #333; padding-top: 20px; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>🐺 Okami Scan</h1>
-        <input type="text" id="search" placeholder="Buscar manga...">
-    </header>
-    <div class="container">
-        <div class="manga">
-            <img src="https://via.placeholder.com/150" alt="Manga 1">
-            <p>Manga 1</p>
+
+    <h1>🐺 Okami Scan</h1>
+
+    <div class="panel">
+        <h2>Administración</h2>
+        <button onclick="window.mostrarForm('manga')">➕ Nuevo Manga</button>
+        <button onclick="window.mostrarForm('capitulo')">📁 Subir Capítulo</button>
+
+        <div id="form-subida">
+            <h3 id="form-titulo">---</h3>
+            <input type="text" id="nombre-input" placeholder="Nombre o Número">
+            <input type="file" id="archivo-input">
+            <button onclick="window.subirDatos()" style="background: #28a745;">🚀 Publicar en Firebase</button>
         </div>
-        <div class="manga">
-            <img src="https://via.placeholder.com/150" alt="Manga 2">
-            <p>Manga 2</p>
-        </div>
-        <div class="manga">
-            <img src="https://via.placeholder.com/150" alt="Manga 3">
-            <p>Manga 3</p>
-        </div>
-        <!-- Agrega más mangas aquí -->
     </div>
-    <script src="script.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // IMPORTANTE: REEMPLAZA ESTO CON TUS CREDENCIALES DE FIREBASE
+        const firebaseConfig = {
+            apiKey: "TU_API_KEY",
+            authDomain: "tu-proyecto.firebaseapp.com",
+            projectId: "tu-proyecto-id",
+            storageBucket: "tu-proyecto.appspot.com",
+            appId: "tu-app-id"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.mostrarForm = (tipo) => {
+            document.getElementById('form-subida').style.display = 'block';
+            document.getElementById('form-titulo').innerText = tipo === 'manga' ? 'Registrar Manga' : 'Registrar Capítulo';
+        };
+
+        window.subirDatos = async () => {
+            const nombre = document.getElementById('nombre-input').value;
+            if(!nombre) return alert("Mario, escribe un nombre primero.");
+            
+            try {
+                await addDoc(collection(db, "mangas"), {
+                    titulo: nombre,
+                    fecha: serverTimestamp()
+                });
+                alert("¡Guardado exitosamente!");
+                location.reload();
+            } catch (e) { 
+                alert("Error: " + e.message); 
+            }
+        };
+    </script>
 </body>
 </html>
-
