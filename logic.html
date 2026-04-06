@@ -1,0 +1,35 @@
+let mangas = [];
+
+fetch("data.json")
+  .then(res => res.json())
+  .then(data => {
+    mangas = data.mangas;
+    mostrarMangas(mangas);
+  });
+
+function mostrarMangas(lista) {
+  const contenedor = document.getElementById("contenedor");
+  contenedor.innerHTML = "";
+
+  lista.forEach(manga => {
+    contenedor.innerHTML += `
+      <div class="card" onclick="verManga('${manga.id}')">
+        <img src="${manga.imagen}">
+        <p>${manga.titulo}</p>
+      </div>
+    `;
+  });
+}
+
+function verManga(id) {
+  window.location.href = manga.html?id=${id};
+}
+
+// 🔎 buscador PRO
+document.getElementById("search").addEventListener("input", e => {
+  const texto = e.target.value.toLowerCase();
+  const filtrados = mangas.filter(m =>
+    m.titulo.toLowerCase().includes(texto)
+  );
+  mostrarMangas(filtrados);
+});
