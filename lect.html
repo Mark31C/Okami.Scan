@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Lector</title>
+</head>
+
+<body style="background:black; color:white; text-align:center;">
+
+<h2 id="titulo"></h2>
+<div id="capitulos"></div>
+<div id="lector"></div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+fetch("data.json")
+.then(res => res.json())
+.then(data => {
+  const manga = data.mangas.find(m => m.id === id);
+
+  document.getElementById("titulo").innerText = manga.titulo;
+
+  let caps = document.getElementById("capitulos");
+
+  for (let i = 1; i <= manga.capitulos; i++) {
+    caps.innerHTML += <button onclick="leerCap(${i})">Cap ${i}</button>;
+  }
+});
+
+function leerCap(cap) {
+  let lector = document.getElementById("lector");
+  lector.innerHTML = "";
+
+  for (let i = 1; i <= 10; i++) {
+    let img = document.createElement("img");
+    img.src = mangas/${id}/cap${cap}/${i}.jpg;
+    img.style.width = "100%";
+    lector.appendChild(img);
+  }
+}
+</script>
+
+</body>
+</html>
